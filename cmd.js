@@ -223,7 +223,13 @@ async function startMining() {
 
     return {
       promise,
-      kill: () => p.kill()
+      kill: () => {
+        try {
+          p.kill()
+        } catch (err) {
+          if (err.code !== 'ESRCH') throw err
+        }
+      }
     }
   }
 }
